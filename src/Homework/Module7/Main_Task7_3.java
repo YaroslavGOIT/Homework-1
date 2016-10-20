@@ -39,20 +39,15 @@ public class Main_Task7_3 {
         setList.add(rdr10);
 
 
-        //int kek=(int) setList.stream().filter(x -> (x.getUser().getLastName().equals("Petrov"))).count();
-        int kek=0;
-        for(Order list:setList){
-            if(list.getUser().getCity().contains("Petrov")){
-                kek++;
-            }
-        }
+        int kek=(int) setList.stream().filter(x-> Objects.equals(x.getUser().getLastName(), "Petrov")).count();
+
         if(kek>1) System.out.println("Found "+kek+" users with second name Petrov");
         if(kek==1) System.out.println("Found "+kek+" user with second name Petrov");
         if(kek<1) System.out.println("Didin't find users with second name Petrov");
 
 
-        Set<Order> OrderWithMaxPrice=new TreeSet<>(((o1, o2) -> (o1.getPrice()-o2.getPrice())));
-        OrderWithMaxPrice.add(maxPrice(setList));
+        Set<Optional<Order>> OrderWithMaxPrice=new TreeSet<>();
+        OrderWithMaxPrice.add(setList.stream().sorted((o1,o2)->o1.getPrice()-o2.getPrice()).skip(setList.size()-1).findFirst());
         System.out.println(OrderWithMaxPrice);
 
         Iterator<Order> iter=setList.iterator();
@@ -62,17 +57,5 @@ public class Main_Task7_3 {
             }
         }
         System.out.println(setList);
-    }
-    private static Order maxPrice(Set<Order> d){
-        Order[] ord=new Order[1];
-        int x=0;
-        for (Order order:d){
-            if(order.getPrice()>x){
-                x=order.getPrice();
-                ord[0]=order;
-            }
-        }
-        Order order=ord[0];
-        return order;
     }
 }

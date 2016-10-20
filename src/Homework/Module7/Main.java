@@ -3,9 +3,12 @@ package Homework.Module7;
 import Homework.Module4.Currency;
 import Homework.Module6.UserUtils;
 
+import java.lang.annotation.Annotation;
 import java.util.*;
 import java.util.function.Predicate;
 import java.util.function.UnaryOperator;
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
 
 public class Main{
     private static int k=1;
@@ -48,61 +51,38 @@ public class Main{
         System.out.println(k+" =========================================================================\n");
         k++;
 
-        Comparator<Order> c1=new Comparator<Order>() {
-            @Override
-            public int compare(Order o1, Order o2) {
-                return o2.getPrice()-o1.getPrice();
+        Comparator<Order> price= (o1, o2) -> o2.getPrice()-o1.getPrice();
+
+        Comparator<Order> priceAndCity= (o1, o2) -> {
+            if(o1.getPrice()==o2.getPrice()){
+                return UserUtils.alphabet(o1.getUser().getCity(),o2.getUser().getCity());
             }
-        };
-        Comparator<Order> c2=new Comparator<Order>() {
-            @Override
-            public int compare(Order o1, Order o2) {
-                //if price of user is equals
-                if(o1.getPrice()==o2.getPrice()){
-                    return UserUtils.alphabet(o1.getUser().getCity(),o2.getUser().getCity());
-                }
-                //if city of user is equals
-                if(UserUtils.alphabet(o1.getUser().getCity(),o2.getUser().getCity())==0){
-                    return o1.getPrice()-o2.getPrice();
-                }
-                //if price and city of user is equals
-                if(o1.getPrice()!=o2.getPrice()&&UserUtils.alphabet(o1.getUser().getCity(),o2.getUser().getCity())==0){
-                    return o1.getPrice()-o2.getPrice();
-                }
-                return 0;
-            }
-        };
-        Comparator<Order> c3=new Comparator<Order>() {
-            @Override
-            public int compare(Order o1, Order o2) {
-                if(o1.getItemName()==o2.getItemName()) {
-                    if (o1.getShopIdentificator() == o2.getShopIdentificator()) {
-                        return UserUtils.alphabet(o1.getUser().getCity(), o2.getUser().getCity());
-                    }
-                    //if city of user is equals
-                    if (UserUtils.alphabet(o1.getUser().getCity(), o2.getUser().getCity()) == 0) {
-                        return o1.getPrice() - o2.getPrice();
-                    }
-                    //if Shop Identificator and city of user is equals
-                    if (o1.getShopIdentificator() != o2.getShopIdentificator() && UserUtils.alphabet(o1.getUser().getCity(), o2.getUser().getCity()) == 0) {
-                        return UserUtils.alphabet(o1.getShopIdentificator(),o2.getShopIdentificator());
-                    }
-                } else{
-                    return UserUtils.alphabet(o1.getItemName(),o2.getItemName());
-                }
-                return 0;
-            }
+            return o1.getPrice()-o2.getPrice();
         };
 
-        listOfOrder.sort(c1);
+
+        Comparator<Order> cityAndShopId= (o1, o2) -> {
+            if(o1.getItemName()==o2.getItemName()) {
+                if (UserUtils.alphabet(o1.getUser().getCity(), o2.getUser().getCity()) == 0) {
+                    return o1.getPrice() - o2.getPrice();
+                }
+                if(o1.getPrice()==o2.getPrice()) {
+                    return UserUtils.alphabet(o1.getShopIdentificator(), o2.getShopIdentificator());
+
+                }
+            }
+            return UserUtils.alphabet(o1.getItemName(),o2.getItemName());
+        };
+
+        listOfOrder.sort(price);
         System.out.println(listOfOrder);
         System.out.println(k+" =========================================================================\n");
         k++;
-        listOfOrder.sort(c2);
+        listOfOrder.sort(priceAndCity);
         System.out.println(listOfOrder);
         System.out.println(k+" =========================================================================\n");
         k++;
-        listOfOrder.sort(c3);
+        listOfOrder.sort(cityAndShopId);
         System.out.println(listOfOrder);
         System.out.println(k+" =========================================================================\n");
         k++;
@@ -124,20 +104,15 @@ public class Main{
         str(list2);
         str(list3);
 
-        Set<String> setList=new HashSet<>();
-        for(Order order:list1){
-            setList.add(order.getUser().getCity());
-        }
+        Set<String> setList=list1.stream().map(o->o.getUser().getCity()).collect(Collectors.toSet());
 
-        List<String> setList1=new ArrayList<>();
-        for(String str:setList) setList1.add(str);
+        /*List<String> setList1=new ArrayList<>();
+        for(String str:setList) setList1.add(str);*/
 
-        List<ArrayList<Order>> megaListCity=new ArrayList<>();
-        megaListCity=create2dArray(setList1,list1);
+        List<ArrayList<Order>> megaListCity;
+        megaListCity=create2dArray(setList,list1);
         for(int i=0;i<megaListCity.size();i++) {
-            for (Order order : megaListCity.get(i)) {
-                System.out.println(order);
-            }
+            megaListCity.get(i).forEach(System.out::println);
             System.out.println("^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^");
         }
         System.out.println(getK()+"========================================================================");
@@ -160,7 +135,7 @@ public class Main{
         }
         return list;
     }
-    private static List<ArrayList<Order>> create2dArray(List<String> str,List<Order> orders){
+    private static List<ArrayList<Order>> create2dArray(Set<String> str,List<Order> orders){
         List<ArrayList<Order>> list2d=new ArrayList<>();
         for (String string:str) {
             list2d.add((ArrayList<Order>) createCityArray(string,orders));
@@ -175,4 +150,5 @@ public class Main{
     public static void setK(int k) {
         Main.k = k;
     }
+
 }
