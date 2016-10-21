@@ -102,6 +102,7 @@ public class Main{
 
         List<ArrayList<Order>> megaListCity;
         megaListCity=create2dArray(setList,list1);
+        //This loop for print
         for (ArrayList<Order> aMegaListCity : megaListCity) {
             aMegaListCity.forEach(System.out::print);
             System.out.println("^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^");

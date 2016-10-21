@@ -51,12 +51,8 @@ public class Main_Task7_3 {
         OrderWithMaxPrice.add(setList.stream().skip(setList.size()-1).findFirst());
         System.out.println(OrderWithMaxPrice);
 
-        Iterator<Order> iter=setList.iterator();
-        while(iter.hasNext()){
-            if(iter.next().getCurrency()==Currency.USD){
-                iter.remove();
-            }
-        }
+        setList.removeIf(x->x.getCurrency()==Currency.USD);
+
         System.out.println(setList);
     }
 }
