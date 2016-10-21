@@ -58,7 +58,7 @@ public class Main{
 
 
         Comparator<Order> cityAndShopId= (o1, o2) -> {
-            if(o1.getItemName()==o2.getItemName()) {
+            if(Objects.equals(o1.getItemName(), o2.getItemName())) {
                 if (UserUtils.alphabet(o1.getUser().getCity(), o2.getUser().getCity()) == 0) {
                     return o1.getPrice() - o2.getPrice();
                 }

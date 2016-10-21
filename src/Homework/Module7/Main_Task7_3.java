@@ -45,7 +45,8 @@ public class Main_Task7_3 {
         if(kek==1) System.out.println("Found "+kek+" user with second name Petrov");
         if(kek<1) System.out.println("Didin't find users with second name Petrov");
 
-
+        //Не могу понять как к сету применить метод гет если у негог нету этого сет метода
+        //Превратить с помощью стрима не получается в ерейЛист а там и гет будет.
         Set<Optional<Order>> OrderWithMaxPrice=new HashSet<>();
         OrderWithMaxPrice.add(setList.stream().skip(setList.size()-1).findFirst());
         System.out.println(OrderWithMaxPrice);
