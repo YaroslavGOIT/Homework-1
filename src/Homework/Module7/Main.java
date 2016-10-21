@@ -106,13 +106,10 @@ public class Main{
 
         Set<String> setList=list1.stream().map(o->o.getUser().getCity()).collect(Collectors.toSet());
 
-        /*List<String> setList1=new ArrayList<>();
-        for(String str:setList) setList1.add(str);*/
-
         List<ArrayList<Order>> megaListCity;
         megaListCity=create2dArray(setList,list1);
-        for(int i=0;i<megaListCity.size();i++) {
-            megaListCity.get(i).forEach(System.out::println);
+        for (ArrayList<Order> aMegaListCity : megaListCity) {
+            aMegaListCity.forEach(System.out::print);
             System.out.println("^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^");
         }
         System.out.println(getK()+"========================================================================");

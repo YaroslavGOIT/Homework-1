@@ -46,8 +46,8 @@ public class Main_Task7_3 {
         if(kek<1) System.out.println("Didin't find users with second name Petrov");
 
 
-        Set<Optional<Order>> OrderWithMaxPrice=new TreeSet<>();
-        OrderWithMaxPrice.add(setList.stream().sorted((o1,o2)->o1.getPrice()-o2.getPrice()).skip(setList.size()-1).findFirst());
+        Set<Optional<Order>> OrderWithMaxPrice=new HashSet<>();
+        OrderWithMaxPrice.add(setList.stream().skip(setList.size()-1).findFirst());
         System.out.println(OrderWithMaxPrice);
 
         Iterator<Order> iter=setList.iterator();
