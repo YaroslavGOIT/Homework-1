@@ -3,11 +3,7 @@ package Homework.Module7;
 import Homework.Module4.Currency;
 import Homework.Module6.UserUtils;
 
-import java.lang.annotation.Annotation;
 import java.util.*;
-import java.util.function.Predicate;
-import java.util.function.UnaryOperator;
-import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
 public class Main{
@@ -94,10 +90,8 @@ public class Main{
         list1.removeIf(x -> (x.getPrice() < 150));//не 1500 потому что иначе масив будет пуст
         str(list1);
 
-        List<Order> list2=new ArrayList<>();
-        List<Order> list3=new ArrayList<>();
-        list2.addAll(list1);
-        list3.addAll(list1);
+        List<Order> list2=list1.stream().filter(o->o.getCurrency()!=Currency.USD).collect(Collectors.toList());
+        List<Order> list3=list1.stream().filter(o->o.getCurrency()!=Currency.EUR).collect(Collectors.toList());
 
         list3.removeIf(x -> (x.getCurrency()==Currency.EUR));
         list2.removeIf(x -> (x.getCurrency()==Currency.USD));
